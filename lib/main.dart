@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/ui/pages/home/home_page.dart';
 import 'package:quizapp/models/quiz_options.dart';
-import 'package:quizapp/ui/pages/quiz/quiz_page.dart';
+import 'package:quizapp/ui/pages/home/home_page.dart';
+import 'package:quizapp/ui/pages/quiz/quiz_screen.dart';
 
 void main() {
   runApp(

@@ -18,19 +18,21 @@ class QuizResponse {
 class QuizResults {
   String question;
   String correctAnswer;
-  List<String> incorrectAnswers;
+  List<String> allAnswers;
 
-  QuizResults({this.question, this.correctAnswer, this.incorrectAnswers});
+  QuizResults({this.question, this.correctAnswer, this.allAnswers});
 
   factory QuizResults.fromJson(Map<String, dynamic> json) {
     return QuizResults(
         question: json['question'],
         correctAnswer: json['correct_answer'],
-        incorrectAnswers: parseIncorrectAnswers(json['incorrect_answers']));
+        allAnswers: parseAnswers(json));
   }
 
-  static List<String> parseIncorrectAnswers(incorrectOptions) {
-    List<String> options = new List<String>.from(incorrectOptions);
+  static List<String> parseAnswers(Map<String, dynamic> json) {
+    List<String> options = List<String>();
+    options.add(json['correct_answer']);
+    options.addAll(List<String>.from(json['incorrect_answers']));
     return options;
   }
 }

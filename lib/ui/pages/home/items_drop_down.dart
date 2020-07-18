@@ -17,11 +17,6 @@ class ItemDropDown extends StatefulWidget {
 class _ItemDropDownState extends State<ItemDropDown> {
 
   @override
-  void initState() {
-    super.initState();
-
-  }
-  @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
@@ -41,6 +36,7 @@ class _ItemDropDownState extends State<ItemDropDown> {
           underline: SizedBox(),
           onChanged: (ItemModel newValue) {
             setState(() {
+              widget.defaultItem = newValue;
               widget.selectedId(newValue.id);
             });
           },

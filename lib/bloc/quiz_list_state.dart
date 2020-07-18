@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-
-import 'package:quizapp/models/quiz_model_api.dart';
+import 'package:quizapp/models/quiz_answer_model.dart';
 
 abstract class QuizState extends Equatable {}
 
@@ -12,7 +11,7 @@ class QuizLoadingState extends QuizState {
 
 @immutable
 class QuizLoadedState extends QuizState {
-  final List<QuizResults> quizs;
+  final List<QuizModel> quizs;
 
   QuizLoadedState({@required this.quizs});
 

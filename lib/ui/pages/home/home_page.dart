@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/models/item_model.dart';
 import 'package:quizapp/models/quiz_options.dart';
-import 'package:quizapp/ui/pages/quiz/quiz_page.dart';
-import 'package:quizapp/ui/widgets/items_drop_down.dart';
+import 'package:quizapp/ui/pages/home/items_drop_down.dart';
+import 'package:quizapp/ui/pages/quiz/quiz_screen.dart';
+import 'package:quizapp/ui/widgets/common_widgets.dart';
 import 'package:quizapp/utils/colors.dart';
 import 'package:quizapp/utils/constants.dart';
 
@@ -17,7 +18,9 @@ class _HomePageState extends State<HomePage> {
   ItemModel _selectedDifficulty;
 
   final List<ItemModel> type = AppConstants.type;
+
   final List<ItemModel> categories = AppConstants.categories;
+
   final List<ItemModel> difficulty = AppConstants.difficulty;
 
   String _typeID;
@@ -35,6 +38,18 @@ class _HomePageState extends State<HomePage> {
     _type = type[0];
     _selectedCategory = categories[0];
     _selectedDifficulty = difficulty[0];
+  }
+  
+  void _navigateQuizPage() {
+    Navigator.pushNamed(
+      context,
+      QuizScreen.QUIZ_PAGE,
+      arguments: QuizOptions(
+        typeId: _typeID,
+        categoryId: _categoryID,
+        difficultyId: _difficultyID,
+      ),
+    );
   }
 
   @override
@@ -98,7 +113,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 50,
             ),
-            _createRaisedButton()
+            AppButton(
+              text: "Submit",
+              handler: () {
+                _navigateQuizPage();
+              },
+            )
           ],
         ),
       ),
@@ -118,41 +138,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Widget _createRaisedButton() {
-    return Align(
-        alignment: Alignment.center,
-        child: Container(
-          width: 140,
-          height: 50,
-          child: RaisedButton(
-            onPressed: () => {
-              Navigator.pushNamed(
-                context,
-                QuizScreen.QUIZ_PAGE,
-                arguments: QuizOptions(
-                  typeId: _typeID,
-                  categoryId: _categoryID,
-                  difficultyId: _difficultyID,
-                ),
-              ),
-            },
-            color: AppColors.button,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-            child: Text(
-              "Submit",
-              style: TextStyle(
-                fontFamily: 'Monteserrat',
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ));
   }
 }
