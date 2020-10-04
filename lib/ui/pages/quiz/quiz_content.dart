@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/models/quiz_answer_model.dart';
+import 'package:quizapp/models/quiz_result_item.dart';
 import 'package:quizapp/ui/pages/quiz/quiz_question_answer.dart';
+import 'package:quizapp/ui/pages/result/results.dart';
 import 'package:quizapp/ui/widgets/common_widgets.dart';
 import 'package:quizapp/utils/colors.dart';
 
@@ -21,6 +23,8 @@ class _QuizFullPageScreenState extends State<QuizFullPageScreen> {
       setState(() {
         questionNumber++;
       });
+    } else {
+      _navigateToResults();
     }
   }
 
@@ -30,6 +34,28 @@ class _QuizFullPageScreenState extends State<QuizFullPageScreen> {
         questionNumber--;
       });
     }
+  }
+
+  void _navigateToResults() {
+    //List<QuizResult> results = _quizResults();
+    Navigator.pushNamed(
+      context,
+      ResultsPage.RESULT_PAGE,
+      arguments: widget.quizs
+    );
+  }
+
+  List<QuizResult> _quizResults() {
+    List<QuizResult> quizResults = List<QuizResult>();
+    widget.quizs.map((element) {
+      QuizAnswerModel model =
+      element.answerModels.firstWhere((element) => element.checkedOption);
+      quizResults.add(QuizResult(
+          question: element.question,
+          correctAnswer: element.correctAnswer,
+          yourAnswer: model.option));
+    });
+    return quizResults;
   }
 
   @override

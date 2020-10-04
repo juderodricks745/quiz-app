@@ -41,7 +41,7 @@ class QuestionWidget extends StatelessWidget {
           fontFamily: 'Monteserrat',
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.white),
+          color: Colors.white,),
     );
   }
 }
@@ -74,9 +74,9 @@ class _QuizAnswerListState extends State<QuizAnswerList> {
           onTap: () {
             setState(() {
               widget.answers.forEach((element) {
-                element.isCorrect = false;
+                element.checkedOption = false;
               });
-              widget.answers[index].isCorrect = true;
+              widget.answers[index].checkedOption = true;
             });
           },
           child: AnswerWidget(model: widget.answers[index]),
@@ -114,7 +114,7 @@ class AnswerWidget extends StatelessWidget {
             ),
             IconButton(
               // Use the EvaIcons class for the IconData
-              icon: model.isCorrect
+              icon: model.checkedOption
                   ? Icon(
                 Icons.radio_button_checked,
                 color: Colors.blueAccent,

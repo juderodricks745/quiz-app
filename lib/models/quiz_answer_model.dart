@@ -10,7 +10,7 @@ class QuizModel {
 class QuizAnswerModel {
 
   String option;
-  bool isCorrect;
+  bool checkedOption;
 
-  QuizAnswerModel({this.option, this.isCorrect});
+  QuizAnswerModel({this.option, this.checkedOption});
 }
