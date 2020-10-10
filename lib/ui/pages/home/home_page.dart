@@ -32,16 +32,18 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // ID's selected by default
-    _typeID = type[0].id;
+    _typeID = type[1].id;
     _categoryID = categories[0].id;
-    _difficultyID = difficulty[0].id;
+    _difficultyID = difficulty[1].id;
 
-    _type = type[0];
+    _type = type[1];
     _selectedCategory = categories[0];
-    _selectedDifficulty = difficulty[0];
+    _selectedDifficulty = difficulty[1];
   }
   
   void _navigateQuizPage() {
+    print("Type: ${type[1].id}");
+    print("Difficult: ${difficulty[1].id}");
     Navigator.pushNamed(
       context,
       QuizScreen.QUIZ_PAGE,

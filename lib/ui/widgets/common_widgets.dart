@@ -9,12 +9,14 @@ Widget showProgressWidget() {
 
 Widget showErrorWidget(String error) {
   return Center(
-    child: Text(
-      'Error $error',
-      style: TextStyle(
-        fontSize: 20.0,
+    child: Padding(
+      padding: EdgeInsets.only(left: 20, right: 20),
+      child: Text(
+        '$error',
+        style: TextStyle(
+            fontSize: 18.0, fontFamily: 'Monteserrat', color: Colors.white),
+        textAlign: TextAlign.center,
       ),
-      textAlign: TextAlign.center,
     ),
   );
 }

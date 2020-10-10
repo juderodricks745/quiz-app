@@ -61,7 +61,11 @@ class _QuizPageState extends State<QuizPage> {
             future: getQuiz(widget.type, widget.category, widget.difficulty),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return QuizFullPageScreen(quizs: snapshot.data);
+                if (snapshot.data.length > 0) {
+                  return QuizFullPageScreen(quizs: snapshot.data);
+                } else {
+                  return showErrorWidget("No Quiz's for this section, please go back & try different section!");
+                }
               } else if (snapshot.hasError) {
                 return showErrorWidget("Well, nothing to display!");
               }
@@ -78,6 +82,7 @@ class _QuizPageState extends State<QuizPage> {
       String type, String category, String difficulty) async {
     final url =
         'https://opentdb.com/api.php?amount=10&category=$category&difficulty=$difficulty&type=$type';
+    print("url -> $url");
     final List<QuizResults> list = List<QuizResults>();
     List<QuizModel> models = List<QuizModel>();
     try {
