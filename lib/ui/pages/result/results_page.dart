@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:quizapp/models/quiz_answer_model.dart';
+import 'package:quizapp/ui/pages/result/results_controller.dart';
 import 'package:quizapp/utils/colors.dart';
 
-class ResultsPage extends StatelessWidget {
+class ResultsPage extends GetView<ResultsController> {
   static const RESULT_PAGE = '/result';
-
-  final List<QuizModel> quizResults;
-
-  ResultsPage({this.quizResults});
 
   @override
   Widget build(BuildContext context) {
@@ -33,33 +31,37 @@ class ResultsPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    Text(
-                      "Score: ${getCorrectAnswers()} / ${quizResults.length}",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: 'Monteserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Obx(() =>
+                      Text(
+                        "Score: ${controller.correctlyAnswered}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontFamily: 'Monteserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    Text(
-                      quizResultOutcome(getCorrectAnswers()),
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Monteserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Obx(() =>
+                        Text(
+                          controller.outcome,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Monteserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )
                     )
                   ],
                 ),
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: quizResults.length,
+                  itemCount: controller.quizs.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return resultsItem(quizResults[index]);
+                    return resultsItem(controller.quizs[index]);
                   },
                 ),
               ),
@@ -127,29 +129,5 @@ class ResultsPage extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  int getCorrectAnswers() {
-    int correctAnswers = 0;
-    quizResults.forEach((element) {
-      QuizAnswerModel model =
-          element.answerModels.firstWhere((element) => element.checkedOption);
-      if (element.correctAnswer == model.option) {
-        correctAnswers++;
-      }
-    });
-    return correctAnswers;
-  }
-
-  String quizResultOutcome(int correctAnswers) {
-    if (correctAnswers > 8) { //9, 10
-      return "Excellent";
-    } else if (correctAnswers > 5 && correctAnswers <= 8) { // 6..8
-      return "Good";
-    } else if (correctAnswers >= 3 && correctAnswers <= 5) { // 4..5
-      return "Unsatisfactory";
-    } else { // Less than or equal to 3
-      return "Poor";
-    }
   }
 }

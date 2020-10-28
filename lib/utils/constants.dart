@@ -3,13 +3,11 @@ import 'package:quizapp/models/item_model.dart';
 class AppConstants {
 
   static List<ItemModel> type = [
-    ItemModel("any", "Any"),
     ItemModel("multiple", "Multi - Choice"),
     ItemModel("boolean", "True / False")
   ];
 
   static List<ItemModel> difficulty = [
-    ItemModel("any", "Any"),
     ItemModel("easy", "Easy"),
     ItemModel("medium", "Medium"),
     ItemModel("hard", "Hard")

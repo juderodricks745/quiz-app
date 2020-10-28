@@ -1,59 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/models/item_model.dart';
+import 'package:get/get.dart';
 import 'package:quizapp/models/quiz_options.dart';
-import 'package:quizapp/ui/widgets/items_drop_down.dart';
-import 'package:quizapp/ui/pages/quiz/quiz_screen.dart';
+import 'package:quizapp/ui/pages/home/home_controller.dart';
+import 'package:quizapp/ui/pages/quiz/quiz_binding.dart';
+import 'package:quizapp/ui/pages/quiz/quiz_page.dart';
 import 'package:quizapp/ui/widgets/common_widgets.dart';
+import 'package:quizapp/ui/widgets/items_drop_down.dart';
 import 'package:quizapp/utils/colors.dart';
-import 'package:quizapp/utils/constants.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<HomeController> {
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  ItemModel _type;
-  ItemModel _selectedCategory;
-  ItemModel _selectedDifficulty;
-
-  final List<ItemModel> type = AppConstants.type;
-
-  final List<ItemModel> categories = AppConstants.categories;
-
-  final List<ItemModel> difficulty = AppConstants.difficulty;
-
-  String _typeID;
-  String _categoryID;
-  String _difficultyID;
-
-  @override
-  void initState() {
-    super.initState();
-    // ID's selected by default
-    _typeID = type[1].id;
-    _categoryID = categories[0].id;
-    _difficultyID = difficulty[1].id;
-
-    _type = type[1];
-    _selectedCategory = categories[0];
-    _selectedDifficulty = difficulty[1];
-  }
-  
-  void _navigateQuizPage() {
-    print("Type: ${type[1].id}");
-    print("Difficult: ${difficulty[1].id}");
-    Navigator.pushNamed(
-      context,
-      QuizScreen.QUIZ_PAGE,
-      arguments: QuizOptions(
-        typeId: _typeID,
-        categoryId: _categoryID,
-        difficultyId: _difficultyID,
-      ),
-    );
-  }
+  static const ROOT_PAGE = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -71,46 +28,37 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: 30,
-            ),
-            _createLabelWidget("Select Category"),
+            _createLabelWidget(marginTop: 25, name: "Select Category"),
             SizedBox(
               height: 15,
             ),
             ItemDropDown(
-              defaultItem: _selectedCategory,
-              items: categories,
+              defaultItem: controller.categories[0],
+              items: controller.categories,
               selectedId: (id) {
-                _categoryID = id;
+                controller.category = id;
               },
             ),
-            SizedBox(
-              height: 25,
-            ),
-            _createLabelWidget("Select Difficulty"),
+            _createLabelWidget(marginTop: 25, name: "Select Difficulty"),
             SizedBox(
               height: 15,
             ),
             ItemDropDown(
-              defaultItem: _selectedDifficulty,
-              items: difficulty,
+              defaultItem: controller.difficulties[0],
+              items: controller.difficulties,
               selectedId: (id) {
-                _difficultyID = id;
+                controller.difficulty = id;
               },
             ),
-            SizedBox(
-              height: 25,
-            ),
-            _createLabelWidget("Select Type"),
+            _createLabelWidget(marginTop: 25, name: "Select Type"),
             SizedBox(
               height: 15,
             ),
             ItemDropDown(
-              defaultItem: _type,
-              items: type,
+              defaultItem: controller.types[0],
+              items: controller.types,
               selectedId: (id) {
-                _typeID = id;
+                controller.type = id;
               },
             ),
             SizedBox(
@@ -119,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             AppButton(
               text: "Submit",
               handler: () {
-                _navigateQuizPage();
+                _toQuiz();
               },
             )
           ],
@@ -128,18 +76,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _createLabelWidget(String name) {
+  Widget _createLabelWidget({double marginTop, String name}) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Text(
-        name,
-        style: TextStyle(
-          fontSize: 15,
-          fontFamily: 'Monteserrat',
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: marginTop,
+          ),
+          Text(
+            name,
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Monteserrat',
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _toQuiz() {
+    Get.to(
+      QuizScreen(),
+      arguments: QuizOptions(
+        typeId: controller.type,
+        categoryId: controller.category,
+        difficultyId: controller.difficulty,
+      ),
+      binding: QuizBinding()
     );
   }
 }
